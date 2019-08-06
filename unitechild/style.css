@@ -1,0 +1,36 @@
+/*
+Theme Name:   Unite Child
+Template:     unite
+*/
+
+/* Films Page
+------------------------------------------------*/
+.film-container{
+	margin-top: 8px;
+	margin-bottom: 8px;
+	box-shadow: 7px 7px 8px #888888;
+}
+.film_desc{
+	height: 60px;
+	margin-top: 14px;
+	margin-bottom: 16px;
+	overflow: hidden;
+}
+.film-container .label{
+	font-size: 14px;	
+}
+.film-container .film_meta{
+	height: 160px;
+	overflow: hidden;
+}
+/***** media  *****/
+@media (max-width: 767px) {
+	.film_desc {
+		height: 35px;
+	}
+}
+@media (max-width: 992px) {
+	.film_desc {
+		height: 77px;
+	}
+}
