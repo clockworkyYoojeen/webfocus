@@ -12,6 +12,7 @@ get_header(); ?>
 	if ( !is_plugin_active( 'filmsplugin/filmsplugin.php' ) ){
 		echo "<h3>Для просмотра этой страницы активируйте плагин Films Plugin</h3>";
 	}else{
+		// выводим фильмы используя хук (сработает плагин вывода фильмов)
 		do_action( 'create_films_page' );
 	}
 	?>
