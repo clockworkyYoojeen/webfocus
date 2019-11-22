@@ -17,10 +17,11 @@ function child_custom_post_types() {
 		'labels' => array(
         'name' => 'Films',
 		'singular_name' => 'Film',
-		'add_item' => 'Add Film', 
-		'add_new_item' => 'Добавить новый',
+		'add_new' => 'Добавить фильм', 
+		'add_new_item' => 'Добавить новый фильм',
 		'new_item' => 'Новый фильм',
 		'all_items' => 'Все фильмы',
+		'edit_item' => 'Редактировать фильм',
 	),
 	'public' => true,
 	'show_ui' => true,
@@ -31,7 +32,7 @@ function child_custom_post_types() {
     )
   );
 }
-
+// регистрируем таксономии (страны, жанры, актёры, год выпуска)
 function add_new_taxonomies() {		
 	register_taxonomy('country',
 		array('films'),
@@ -208,33 +209,36 @@ return $post_id;
 }
 add_action( 'save_post', 'film_info_save' );
 
+// создаём шорткод для вывода 5 фильмов
 function webfocus_shortcode( $atts ){
 	/* шорткод может принимать 2 параметра - количество постов и тип постов
-	по умолчанию 5 постов и тип - post
+	по умолчанию 5 постов и тип - films
 	*/
 	$params = shortcode_atts( array(
 	'number' => 5,
-	'type' => 'post'
+	'type' => 'films'
 	), $atts );
+	global $post;
 	$args = array(
 		'posts_per_page' => $params['number'],
 		'post_type' => $params['type'],
 	);
-	$latest = new WP_Query( $args );
-	while ( $latest->have_posts() ):
-		$latest->the_post();
-		$title = get_the_title();
-		$content = get_the_content();
-		$output .= "<div class='panel panel-success'>
-		<div class='panel-heading'>
-		<h3>{$title}</h3>
+	$posts = get_posts($args);
+	foreach($posts as $post){
+		setup_postdata($post);
+		$output .= "<article class='hentry'>
+		<header class='entry-header page-header'>
+		<h2 class='entry-title'>" . get_the_title() . "</h2>
+		<header>
+
+		<div class='entry-content'>
+		<img src='" . get_the_post_thumbnail_url() . "' class='thumbnail wp-post-image' />
+		<p>" . get_the_content() . "</p>
 		</div>
-		<div class='panel-body'>
-		{$content}
-		</div>
-		</div>";
+		</article>";
+	}
 ?>	
-<?php endwhile;
+<?php 
 	wp_reset_postdata();
 	return $output;
 }
